@@ -26,7 +26,7 @@ create table if not exists silver.orders_enriched(
 	order_status varchar(30) not null,
 	currency varchar(3) not null,
 	sales_channel varchar(30) not null,
-	payment_stauts varchar(30) not null,
+	payment_status varchar(30),
 	payment_method varchar(30),
 	is_paid boolean not null,
 	first_order_date date not null,
@@ -35,7 +35,6 @@ create table if not exists silver.orders_enriched(
 	references silver.customers_clean(customer_id)
 	);
 ```
-^ to do rozkminienia
 ```sql
 create table if not exists silver.order_items_enriched(
 	order_item_id int primary key,
@@ -47,13 +46,13 @@ create table if not exists silver.order_items_enriched(
 	unit_price numeric(10,2) not null,
 	discount_percent numeric(5,2) not null,
 	gross_value numeric(10,2) not null,
-	discount_value numeric(5,2) not null,
+	discount_value numeric(10,2) not null,
 	net_value numeric(10,2) not null,
 		constraint fk_order_items_orders
 		foreign key (order_id)
 		references silver.orders_enriched(order_id),
 	constraint fk_order_items_products
 		foreign key (product_id)
-		references raw.products_clean(product_id)
+		references silver.products_clean(product_id)
 	);
 ```
