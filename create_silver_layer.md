@@ -48,6 +48,12 @@ create table if not exists silver.order_items_enriched(
 	discount_percent numeric(5,2) not null,
 	gross_value numeric(10,2) not null,
 	discount_value numeric(5,2) not null,
-	net_value numeric(10,2) not null
+	net_value numeric(10,2) not null,
+		constraint fk_order_items_orders
+		foreign key (order_id)
+		references silver.orders_enriched(order_id),
+	constraint fk_order_items_products
+		foreign key (product_id)
+		references raw.products_clean(product_id)
 	);
 ```
