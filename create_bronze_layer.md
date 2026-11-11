@@ -153,3 +153,6 @@ select
 	paid_at
 from raw.payments;
 ```
+```sql
+commit;
+```
