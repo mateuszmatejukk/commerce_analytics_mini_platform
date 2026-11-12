@@ -50,26 +50,24 @@ paid_orders_count,
 cancelled_orders_count,
 gross_revenue,
 discount_value,
-net_revenue
-)
+net_revenue)
 select
 oe.order_date as sales_date,
 cc.country as country,
 oe.sales_channel as sales_channel,
 count(distinct oe.order_id) as orders_count,
-count(case when oe.payment_status = 'paid' then oe.order_id end) as paid_orders_count,
-count(case when oe.payment_status = 'failed' then oe.order_id end) as cancelled_orders_count,
-round(sum(oie.gross_value),2) as gross_revenue,
-round(sum(oie.discount_value),2) as discount_value,
-round(sum(oie.net_value),2) as net_revenue
-from silver.orders_enriched oe 
-left join silver.customers_clean cc
-on cc.customer_id = oe.customer_id 
+count(distinct case when oe.payment_status = 'paid' then oe.order_id end) as paid_orders_count,
+count(distinct case when oe.payment_status = 'failed' then oe.order_id end) as cancelled_orders_count,
+coalesce(round(sum(case when oe.payment_status = 'paid' then oie.gross_value end),2),0) as gross_revenue,
+coalesce(round(sum(case when oe.payment_status = 'paid' then oie.discount_value end),2),0) as discount_value,
+coalesce(round(sum(case when oe.payment_status = 'paid' then oie.net_value end),2),0) as net_revenue
+from silver.orders_enriched oe
 left join silver.order_items_enriched oie
 on oe.order_id = oie.order_id
-group by oe.order_date, cc.country, oe.sales_channel
+left join silver.customers_clean cc 
+on oe.customer_id = cc.customer_id 
+group by oe.order_date, cc.country,oe.sales_channel
 ```
-^ do dokonczenia
 ```sql
 insert into gold.customer.analytics(
 customer_id,
