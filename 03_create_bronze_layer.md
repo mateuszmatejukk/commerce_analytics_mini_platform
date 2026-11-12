@@ -10,7 +10,7 @@ signup_date date not null,
 acquisition_channel varchar(30)
 );
 ```
-### Table 'bronze.products'
+### Table `bronze.products`
 ```sql
 create table if not exists bronze.products(
 product_id int primary key,
@@ -19,7 +19,7 @@ category varchar(50) not null,
 base_price numeric(10,2) not null
 );
 ```
-### Table 'bronze.orders'
+### Table `bronze.orders`
 ```sql
 create table if not exists bronze.orders(
 	order_id int primary key,
@@ -33,7 +33,7 @@ create table if not exists bronze.orders(
 		references bronze.customers(customer_id)
 );
 ```
-### Table 'bronze.order_items'
+### Table `bronze.order_items`
 ```sql
 create table if not exists bronze.order_items(
 order_item_id int primary key,
@@ -50,7 +50,7 @@ discount_percent numeric(5,2) not null,
 		references bronze.products(product_id)
 );
 ```
-### Table 'bronze.payments'
+### Table `bronze.payments`
 ```sql
 create table if not exists bronze.payments(
 payment_id int primary key,
