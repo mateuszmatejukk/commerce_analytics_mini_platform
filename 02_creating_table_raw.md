@@ -1,4 +1,4 @@
-### Now we need to move on to creating tables neccessary for containing and proccessing data.
+### Now we need to move on to creating tables necessary for containing and processing data.
 ##  Raw layer
 ### Table `raw.customers`
 ```sql
