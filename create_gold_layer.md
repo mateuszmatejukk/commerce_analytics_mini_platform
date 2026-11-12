@@ -98,4 +98,34 @@ last_value(oe.order_date) over(
 count(distinct oe.order_id) as orders_count,
 ```
 ^ do dokonczenia
-
+```sql
+insert into gold.product_performance_monthly(
+sales_month,
+category,
+product_id,
+product_name,
+units_sold,
+gross_revenue,
+net_revenue,
+category_rank_by_revenue
+)
+select
+date_trunc('month',oe.order_date) as sales_month,
+pc.category as category,
+pc.product_id as product_id,
+pc.product_name as product_name,
+sum(oie.quantity) as units_sold,
+sum(oie.gross_value) as gross_revenue,
+sum(oie.net_value) as net_revenue,
+dense_rank() over(
+	partition by date_trunc('month',oe.order_date), pc.category
+	order by sum(oie.net_value) desc
+	) as category_rank_by_revenue
+from silver.products_clean pc
+join silver.order_items_enriched oie
+on pc.product_id = oie.product_id
+join silver.orders_enriched oe
+on oie.order_id = oe.order_id 
+where oe.payment_status = 'paid'
+group by date_trunc('month',oe.order_date), pc.category,pc.product_id,pc.product_name
+```
