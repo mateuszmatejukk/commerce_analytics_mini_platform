@@ -11,7 +11,7 @@ signup_date date not null,
 acquisition_channel varchar(30)
 );
 ```
-### Table 'raw.products'
+### Table `raw.products`
 ```sql
 create table if not exists raw.products(
 product_id int primary key,
@@ -20,7 +20,7 @@ category varchar(50) not null,
 base_price numeric(10,2) not null
 );
 ```
-### Table 'raw.orders'
+### Table `raw.orders`
 ```sql
 create table if not exists raw.orders(
 	order_id int primary key,
@@ -34,7 +34,7 @@ create table if not exists raw.orders(
 		references raw.customers(customer_id)
 );
 ```
-### Table 'raw.order_items'
+### Table `raw.order_items`
 ```sql
 create table if not exists raw.order_items(
 order_item_id int primary key,
@@ -51,7 +51,7 @@ discount_percent numeric(5,2) not null,
 		references raw.products(product_id)
 );
 ```
-### Table 'raw.payments'
+### Table `raw.payments`
 ```sql
 create table if not exists raw.payments(
 payment_id int primary key,
