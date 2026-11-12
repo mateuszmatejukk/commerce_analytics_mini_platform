@@ -64,7 +64,9 @@ paid_at timestamp,
 	references raw.orders(order_id)
 );
 ```
--- Now we are uploading data from file.
+## Loading data
+
+Now we are uploading data from file.
 ```sql
 BEGIN;
 
