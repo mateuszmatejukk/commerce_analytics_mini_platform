@@ -67,14 +67,6 @@ paid_at timestamp,
 begin
 ```
 ```sql
-TRUNCATE TABLE
-    bronze.payments,
-    bronze.order_items,
-    bronze.orders,
-    bronze.products,
-    bronze.customers;
-```
-```sql
 insert into bronze.customers(
 	customer_id,
 	customer_name,
