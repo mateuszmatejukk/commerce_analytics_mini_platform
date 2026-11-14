@@ -85,18 +85,21 @@ select
 cc.customer_id,
 cc.customer_name,
 cc.country,
-first_value(oe.order_date) over(
-	partition by oe.customer_id
-	order by oe.order_date, oe.order_id
-	) as first_order_date,
-last_value(oe.order_date) over(
-	partition by oe.customer_id
-	order by oe.order_date, oe.order_id
-	ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-	) as last_order_date,
+min(oe.order_date) as first_order_date,
+max(oe.order_date) as last_order_date,
 count(distinct oe.order_id) as orders_count,
+coalesce(sum(case when oe.payment_status = 'paid' then oie.net_value end),0) as total_net_revenue,
+coalesce(avg(oie.net_value),0) as average_order_value,
+dense_rank() over (
+	order by coalesce(sum(case when oe.payment_status = 'paid' then oie.net_value end), 0) desc
+	) as customer_lifetime_rank
+from silver.customers_clean cc
+left join silver.orders_enriched oe
+on cc.customer_id = oe.customer_id
+left join silver.order_items_enriched oie
+on oe.order_id = oie.order_id
+group by cc.customer_id, cc.customer_name, cc.country
 ```
-^ do dokonczenia
 ```sql
 insert into gold.product_performance_monthly(
 sales_month,
