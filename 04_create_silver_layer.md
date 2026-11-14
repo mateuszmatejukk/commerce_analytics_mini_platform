@@ -77,6 +77,9 @@ select
 from bronze.customers
 ```
 ```sql
+commit;
+```
+```sql
 begin;
 ```
 ```sql
