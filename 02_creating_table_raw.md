@@ -70,13 +70,6 @@ Now we are uploading data from file.
 ```sql
 BEGIN;
 
-TRUNCATE TABLE
-    raw.payments,
-    raw.order_items,
-    raw.orders,
-    raw.products,
-    raw.customers;
-
 INSERT INTO raw.customers (
     customer_id,
     customer_name,
